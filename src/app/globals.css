@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-ink-950 text-slate-200;
+}
+
+@layer components {
+  .card {
+    @apply rounded-lg border border-ink-700 bg-ink-900;
+  }
+  .input {
+    @apply w-full rounded-md border border-ink-600 bg-ink-950 px-3 py-2 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-brand-500;
+  }
+  .label {
+    @apply mb-1 block text-xs font-medium uppercase tracking-wide text-slate-400;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-brand-500 text-white hover:bg-brand-400;
+  }
+  .btn-ghost {
+    @apply btn border border-ink-600 text-slate-200 hover:bg-ink-800;
+  }
+  .btn-buy {
+    @apply btn bg-up text-white hover:brightness-110;
+  }
+  .btn-sell {
+    @apply btn bg-down text-white hover:brightness-110;
+  }
+  .tab {
+    @apply border-b-2 border-transparent px-3 py-2 text-sm text-slate-400 hover:text-slate-200;
+  }
+  .tab-active {
+    @apply border-brand-500 text-white;
+  }
+  .table {
+    @apply w-full text-left text-sm;
+  }
+  .table th {
+    @apply whitespace-nowrap border-b border-ink-700 px-3 py-2 text-xs font-medium uppercase tracking-wide text-slate-500;
+  }
+  .table td {
+    @apply whitespace-nowrap border-b border-ink-800 px-3 py-2;
+  }
+  .badge {
+    @apply inline-block rounded px-2 py-0.5 text-xs font-semibold;
+  }
+}
