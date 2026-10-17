@@ -30,20 +30,27 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <div className="w-full max-w-sm">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-4">
+      <div className="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" />
+      <div className="pointer-events-none absolute left-1/2 top-1/3 h-[420px] w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-500/15 blur-3xl" />
+      <div className="relative w-full max-w-sm animate-fade-up">
         <div className="mb-6 flex justify-center">
           <Logo />
         </div>
-        <form onSubmit={onSubmit} className="card space-y-4 p-6">
-          <h1 className="text-lg font-semibold text-white">{mode === "login" ? "Sign in to your account" : "Open a trading account"}</h1>
+        <form onSubmit={onSubmit} className="card space-y-4 p-6 sm:p-7">
+          <div>
+            <h1 className="text-xl font-semibold text-white">{mode === "login" ? "Welcome back" : "Open a trading account"}</h1>
+            <p className="mt-1 text-sm text-slate-400">
+              {mode === "login" ? "Sign in to your PhantomFX account" : "Get a $10,000 demo account instantly"}
+            </p>
+          </div>
           {mode === "register" && (
             <>
               <div>
                 <label className="label" htmlFor="name">Full name</label>
                 <input className="input" id="name" name="name" required minLength={2} autoComplete="name" />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid gap-3 sm:grid-cols-2">
                 <div>
                   <label className="label" htmlFor="phone">Phone</label>
                   <input className="input" id="phone" name="phone" placeholder="+254..." autoComplete="tel" />
@@ -78,7 +85,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
             </div>
           )}
           {error && <p className="rounded bg-down/10 px-3 py-2 text-sm text-down">{error}</p>}
-          <button className="btn-primary w-full" disabled={loading}>
+          <button className="btn-primary w-full py-2.5" disabled={loading}>
             {loading ? "Please wait…" : mode === "login" ? "Sign in" : "Create account"}
           </button>
           {mode === "register" && (

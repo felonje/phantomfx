@@ -33,10 +33,10 @@ export function PriceChart({ symbol, digits, tick }: { symbol: string; digits: n
     if (!container.current) return;
     const c = createChart(container.current, {
       autoSize: true,
-      layout: { background: { color: "#0d1320" }, textColor: "#94a3b8" },
-      grid: { vertLines: { color: "#131b2c" }, horzLines: { color: "#131b2c" } },
-      rightPriceScale: { borderColor: "#1c2639" },
-      timeScale: { borderColor: "#1c2639", timeVisible: true, secondsVisible: false },
+      layout: { background: { color: "#0b111d" }, textColor: "#94a3b8" },
+      grid: { vertLines: { color: "#111827" }, horzLines: { color: "#111827" } },
+      rightPriceScale: { borderColor: "#1b2538" },
+      timeScale: { borderColor: "#1b2538", timeVisible: true, secondsVisible: false },
       crosshair: { mode: 0 },
     });
     series.current = c.addCandlestickSeries({
@@ -92,13 +92,13 @@ export function PriceChart({ symbol, digits, tick }: { symbol: string; digits: n
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center gap-1 border-b border-ink-700 px-3 py-1.5">
-        <span className="mr-3 text-sm font-semibold text-white">{symbol}</span>
+      <div className="no-scrollbar flex items-center gap-1 border-b border-ink-700 px-3 py-1.5 overflow-x-auto">
+        <span className="mr-3 hidden text-sm font-semibold text-white lg:inline">{symbol}</span>
         {TFS.map((t) => (
           <button
             key={t.key}
             onClick={() => setTf(t.key)}
-            className={`rounded px-2 py-0.5 text-xs ${tf === t.key ? "bg-ink-700 text-white" : "text-slate-400 hover:text-white"}`}
+            className={`rounded-md px-2.5 py-1 text-xs transition ${tf === t.key ? "bg-ink-700 text-white" : "text-slate-400 hover:text-white"}`}
           >
             {t.key}
           </button>

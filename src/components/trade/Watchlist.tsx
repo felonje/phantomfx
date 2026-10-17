@@ -16,8 +16,8 @@ export function Watchlist({
   onSelect: (s: string) => void;
 }) {
   return (
-    <div className="flex h-full flex-col">
-      <div className="grid grid-cols-[1fr_auto_auto] gap-2 border-b border-ink-700 px-3 py-2 text-xs uppercase tracking-wide text-slate-500">
+    <div className="flex h-full min-h-0 w-full flex-col">
+      <div className="grid grid-cols-[1fr_auto_auto] gap-2 border-b border-ink-700 px-3 py-2 text-[11px] uppercase tracking-wider text-slate-500">
         <span>Symbol</span>
         <span className="w-20 text-right">Bid</span>
         <span className="w-20 text-right">Ask</span>
@@ -30,11 +30,11 @@ export function Watchlist({
             <button
               key={i.symbol}
               onClick={() => onSelect(i.symbol)}
-              className={`grid w-full grid-cols-[1fr_auto_auto] items-center gap-2 border-b border-ink-800 px-3 py-2 text-left hover:bg-ink-800 ${selected === i.symbol ? "bg-ink-800" : ""}`}
+              className={`grid w-full grid-cols-[1fr_auto_auto] items-center gap-2 border-b border-l-2 border-b-ink-800 px-3 py-2.5 text-left transition hover:bg-ink-850 ${selected === i.symbol ? "border-l-brand-500 bg-ink-800" : "border-l-transparent"}`}
             >
               <span>
                 <span className="block text-sm font-semibold text-white">{i.symbol}</span>
-                <span className="block text-[11px] text-slate-500">
+                <span className="block whitespace-nowrap text-[11px] text-slate-500">
                   {t ? (
                     <>
                       <span className={t.changePct >= 0 ? "text-up" : "text-down"}>

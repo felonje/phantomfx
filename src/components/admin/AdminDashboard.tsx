@@ -29,7 +29,7 @@ function useToast() {
     return () => clearTimeout(t);
   }, [toast]);
   const node = toast && (
-    <div className={`fixed bottom-4 right-4 z-50 rounded-md px-4 py-3 text-sm shadow-lg ${toast.error ? "bg-down" : "bg-ink-700"} text-white`}>
+    <div className={`toast ${toast.error ? "bg-down" : "bg-ink-700"}`}>
       {toast.msg}
     </div>
   );
@@ -48,9 +48,9 @@ export function AdminDashboard() {
     ["audit", "Audit log"],
   ];
   return (
-    <div className="mx-auto max-w-7xl space-y-5 p-6">
+    <div className="mx-auto max-w-7xl space-y-5 p-4 sm:p-6">
       <h1 className="text-xl font-semibold text-white">Back office</h1>
-      <div className="flex flex-wrap border-b border-ink-700">
+      <div className="no-scrollbar -mx-4 flex overflow-x-auto border-b border-ink-700 px-4 sm:mx-0 sm:px-0">
         {tabs.map(([k, label]) => (
           <button key={k} className={`tab ${tab === k ? "tab-active" : ""}`} onClick={() => setTab(k)}>{label}</button>
         ))}
@@ -71,8 +71,8 @@ type Toast = ReturnType<typeof useToast>;
 function Stat({ label, value, cls = "text-white" }: { label: string; value: React.ReactNode; cls?: string }) {
   return (
     <div className="card p-4">
-      <div className="text-xs uppercase tracking-wide text-slate-500">{label}</div>
-      <div className={`mt-1 font-mono text-xl ${cls}`}>{value}</div>
+      <div className="stat-label">{label}</div>
+      <div className={`mt-1 font-mono text-lg sm:text-xl ${cls}`}>{value}</div>
     </div>
   );
 }
@@ -88,7 +88,7 @@ function OverviewTab() {
   if (!o) return <p className="text-slate-500">Loading…</p>;
   return (
     <div className="space-y-4">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <Stat label="Clients" value={`${o.users} (+${o.newUsers} today)`} />
         <Stat label="Live client balances" value={usd(o.liveBalances)} />
         <Stat label="Total deposits" value={usd(o.totalDeposits)} />
@@ -305,6 +305,7 @@ function PositionsTab({ toast }: { toast: Toast }) {
       </div>
       <div className="card overflow-hidden">
         <div className="border-b border-ink-700 px-4 py-3 text-sm font-semibold text-white">Net exposure (house is counterparty)</div>
+        <div className="overflow-x-auto">
         <table className="table">
           <thead><tr><th>Symbol</th><th>Client buy lots</th><th>Client sell lots</th><th>Client net</th><th className="text-right">Client P/L</th><th className="text-right">House P/L</th></tr></thead>
           <tbody>
@@ -321,6 +322,7 @@ function PositionsTab({ toast }: { toast: Toast }) {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
       <div className="card overflow-x-auto">
         <table className="table">
