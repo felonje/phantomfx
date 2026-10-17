@@ -1,9 +1,10 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -22,7 +23,7 @@ model User {
 
 model Account {
   id           String        @id @default(cuid())
-  login        Int           @unique
+  login        Int           @unique @default(autoincrement())
   userId       String
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   type         String // DEMO | LIVE
