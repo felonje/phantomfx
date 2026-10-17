@@ -73,22 +73,18 @@ export function OrderTicket({
   const step = (delta: number) => setVolume((v) => Math.max(instrument.minLot, Math.round(((Number(v) || 0) + delta) * 100) / 100).toFixed(2));
 
   return (
-    <div className="space-y-3 p-3">
+    <div className="space-y-4 p-4">
       <div className="flex items-baseline justify-between">
         <div>
           <div className="text-sm font-semibold text-white">{instrument.symbol}</div>
           <div className="text-xs text-slate-500">{instrument.description}</div>
         </div>
-        <div className="text-xs text-slate-500">1:{leverage}</div>
+        <div className="rounded-md bg-ink-800 px-2 py-0.5 font-mono text-xs text-slate-300">1:{leverage}</div>
       </div>
 
-      <div className="grid grid-cols-3 gap-1 rounded-md bg-ink-950 p-1">
+      <div className="segmented grid-cols-3">
         {(["MARKET", "LIMIT", "STOP"] as const).map((t) => (
-          <button
-            key={t}
-            onClick={() => setType(t)}
-            className={`rounded py-1 text-xs font-semibold ${type === t ? "bg-ink-700 text-white" : "text-slate-400"}`}
-          >
+          <button key={t} onClick={() => setType(t)} className={`segment ${type === t ? "segment-active" : ""}`}>
             {t}
           </button>
         ))}
@@ -101,7 +97,19 @@ export function OrderTicket({
           <input className="input text-center font-mono" value={volume} onChange={(e) => setVolume(e.target.value)} inputMode="decimal" />
           <button className="btn-ghost px-3" onClick={() => step(0.01)} type="button">+</button>
         </div>
-        <p className="mt-1 text-[11px] text-slate-500">
+        <div className="mt-1.5 flex gap-1">
+          {[0.01, 0.1, 0.5, 1].map((v) => (
+            <button
+              key={v}
+              type="button"
+              onClick={() => setVolume(v.toFixed(2))}
+              className={`flex-1 rounded-md py-1 font-mono text-[11px] ring-1 ring-inset transition ${lots === v ? "bg-ink-700 text-white ring-ink-500" : "text-slate-400 ring-ink-700 hover:text-white"}`}
+            >
+              {v}
+            </button>
+          ))}
+        </div>
+        <p className="mt-1.5 text-[11px] text-slate-500">
           {units.toLocaleString()} {instrument.base} · pip ≈ {quoteToUsd ? usd(pipValueQuote * quoteToUsd) : `${pipValueQuote.toFixed(2)} ${instrument.quote}`}
           {baseToUsd ? ` · margin ≈ ${usd((units * baseToUsd) / leverage)}` : ""}
         </p>
@@ -135,11 +143,11 @@ export function OrderTicket({
       {disabled && <p className="rounded bg-yellow-500/10 px-3 py-2 text-xs text-yellow-400">{disabled}</p>}
 
       <div className="grid grid-cols-2 gap-2">
-        <button className="btn-sell flex-col gap-0 py-2" disabled={!!busy || !tick || !!disabled} onClick={() => submit("SELL")}>
+        <button className="btn-sell flex-col gap-0 py-2.5" disabled={!!busy || !tick || !!disabled} onClick={() => submit("SELL")}>
           <span className="text-xs font-medium opacity-80">{busy === "SELL" ? "Sending…" : `SELL ${type === "MARKET" ? "" : type}`}</span>
           <span className="font-mono text-base">{price(tick?.bid, instrument.digits)}</span>
         </button>
-        <button className="btn-buy flex-col gap-0 py-2" disabled={!!busy || !tick || !!disabled} onClick={() => submit("BUY")}>
+        <button className="btn-buy flex-col gap-0 py-2.5" disabled={!!busy || !tick || !!disabled} onClick={() => submit("BUY")}>
           <span className="text-xs font-medium opacity-80">{busy === "BUY" ? "Sending…" : `BUY ${type === "MARKET" ? "" : type}`}</span>
           <span className="font-mono text-base">{price(tick?.ask, instrument.digits)}</span>
         </button>

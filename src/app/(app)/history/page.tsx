@@ -62,7 +62,7 @@ export default function HistoryPage() {
   const wins = trades.filter((p) => p.profit > 0).length;
 
   return (
-    <div className="mx-auto max-w-6xl space-y-5 p-6">
+    <div className="mx-auto max-w-6xl space-y-5 p-4 sm:p-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-xl font-semibold text-white">History</h1>
         <select className="input w-auto" value={accountId} onChange={(e) => setAccountId(e.target.value)}>
@@ -71,13 +71,13 @@ export default function HistoryPage() {
           ))}
         </select>
       </div>
-      <div className="grid gap-4 sm:grid-cols-3">
-        <div className="card p-4"><div className="text-xs uppercase text-slate-500">Closed trades</div><div className="mt-1 font-mono text-xl text-white">{trades.length}</div></div>
-        <div className="card p-4"><div className="text-xs uppercase text-slate-500">Win rate</div><div className="mt-1 font-mono text-xl text-white">{trades.length ? `${((wins / trades.length) * 100).toFixed(0)}%` : "—"}</div></div>
-        <div className="card p-4"><div className="text-xs uppercase text-slate-500">Net profit</div><div className={`mt-1 font-mono text-xl ${pnlClass(net)}`}>{signedUsd(net)}</div></div>
+      <div className="grid grid-cols-3 gap-3 sm:gap-4">
+        <div className="card p-3 sm:p-4"><div className="stat-label">Closed trades</div><div className="mt-1 font-mono text-base sm:text-xl text-white">{trades.length}</div></div>
+        <div className="card p-3 sm:p-4"><div className="stat-label">Win rate</div><div className="mt-1 font-mono text-base sm:text-xl text-white">{trades.length ? `${((wins / trades.length) * 100).toFixed(0)}%` : "—"}</div></div>
+        <div className="card p-3 sm:p-4"><div className="stat-label">Net profit</div><div className={`mt-1 font-mono text-base sm:text-xl ${pnlClass(net)}`}>{signedUsd(net)}</div></div>
       </div>
       <div className="card overflow-hidden">
-        <div className="flex border-b border-ink-700 px-2">
+        <div className="no-scrollbar flex overflow-x-auto border-b border-ink-700 px-2">
           {(["trades", "orders", "ledger"] as const).map((t) => (
             <button key={t} className={`tab capitalize ${tab === t ? "tab-active" : ""}`} onClick={() => setTab(t)}>{t}</button>
           ))}

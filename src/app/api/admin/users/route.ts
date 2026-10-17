@@ -6,7 +6,15 @@ export const GET = route(async (req: Request) => {
   await requireAdmin();
   const q = new URL(req.url).searchParams.get("q")?.trim();
   const users = await prisma.user.findMany({
-    where: q ? { OR: [{ email: { contains: q } }, { name: { contains: q } }, { phone: { contains: q } }] } : undefined,
+    where: q
+      ? {
+          OR: [
+            { email: { contains: q, mode: "insensitive" } },
+            { name: { contains: q, mode: "insensitive" } },
+            { phone: { contains: q } },
+          ],
+        }
+      : undefined,
     orderBy: { createdAt: "desc" },
     take: 200,
     select: {

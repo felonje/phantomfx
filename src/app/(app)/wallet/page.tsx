@@ -61,12 +61,12 @@ export default function WalletPage() {
 
   const m = data?.metrics;
   return (
-    <div className="mx-auto max-w-5xl space-y-6 p-6">
+    <div className="mx-auto max-w-5xl space-y-6 p-4 sm:p-6">
       <div>
         <h1 className="text-xl font-semibold text-white">Wallet</h1>
         <p className="text-sm text-slate-400">Live account {data ? `#${data.account.login}` : ""} · USD</p>
       </div>
-      <div className="grid gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {[
           ["Balance", m?.balance],
           ["Equity", m?.equity],
@@ -74,15 +74,15 @@ export default function WalletPage() {
           ["Withdrawable", m ? Math.max(0, Math.min(m.freeMargin, m.balance)) : undefined],
         ].map(([label, v]) => (
           <div key={label as string} className="card p-4">
-            <div className="text-xs uppercase tracking-wide text-slate-500">{label}</div>
-            <div className="mt-1 font-mono text-xl text-white">{usd(v as number | undefined)}</div>
+            <div className="stat-label">{label}</div>
+            <div className="mt-1 font-mono text-lg text-white sm:text-xl">{usd(v as number | undefined)}</div>
           </div>
         ))}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
         <form onSubmit={submit} className="card space-y-4 p-5">
-          <div className="grid grid-cols-2 gap-1 rounded-md bg-ink-950 p-1">
+          <div className="segmented grid-cols-2">
             {(["deposit", "withdraw"] as const).map((k) => (
               <button
                 type="button"
@@ -91,7 +91,7 @@ export default function WalletPage() {
                   setMode(k);
                   setMsg(null);
                 }}
-                className={`rounded py-1.5 text-sm font-semibold capitalize ${mode === k ? "bg-ink-700 text-white" : "text-slate-400"}`}
+                className={`segment text-sm capitalize ${mode === k ? "segment-active" : ""}`}
               >
                 {k}
               </button>
@@ -120,7 +120,7 @@ export default function WalletPage() {
             />
           </div>
           {mode === "deposit" && (
-            <p className="rounded bg-ink-800 p-3 text-xs text-slate-400">
+            <p className="rounded-lg bg-ink-800 p-3 text-xs leading-relaxed text-slate-400">
               Send your payment using the company payment details, then submit the transaction code here. Deposits are
               credited after confirmation by our finance team.
             </p>
