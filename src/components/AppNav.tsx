@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { api } from "@/lib/client/api";
-import { IconChart, IconHistory, IconLogout, IconShield, IconWallet } from "./icons";
+import { IconChart, IconHistory, IconLogout, IconShield, IconUser, IconWallet } from "./icons";
 import { Logo } from "./Logo";
 
 export function AppNav({ user }: { user: { name: string; email: string; role: string } }) {
@@ -13,6 +13,7 @@ export function AppNav({ user }: { user: { name: string; email: string; role: st
     { href: "/trade", label: "Trade", icon: IconChart },
     { href: "/wallet", label: "Wallet", icon: IconWallet },
     { href: "/history", label: "History", icon: IconHistory },
+    { href: "/settings", label: "Account", icon: IconUser },
     ...(user.role === "ADMIN" ? [{ href: "/admin", label: "Admin", icon: IconShield }] : []),
   ];
   const logout = async () => {
@@ -49,9 +50,13 @@ export function AppNav({ user }: { user: { name: string; email: string; role: st
             <div className="text-xs font-medium text-slate-200">{user.name}</div>
             <div className="text-[11px] text-slate-500">{user.email}</div>
           </div>
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-ink-700 text-xs font-semibold text-slate-200 ring-1 ring-ink-600">
+          <Link
+            href="/settings"
+            title="Account & security"
+            className="grid h-8 w-8 place-items-center rounded-full bg-ink-700 text-xs font-semibold text-slate-200 ring-1 ring-ink-600 transition hover:ring-brand-500"
+          >
             {initials || "U"}
-          </span>
+          </Link>
           <button onClick={logout} className="btn-ghost h-8 px-2.5 py-0 text-xs" aria-label="Log out" title="Log out">
             <IconLogout className="h-4 w-4" />
             <span className="hidden sm:inline">Log out</span>

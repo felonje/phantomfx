@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { requireUser } from "@/lib/auth";
+import { requireVerifiedUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { HttpError, json, parseBody, rateLimit, route } from "@/lib/http";
 import { round2 } from "@/lib/trading/math";
@@ -15,7 +15,7 @@ const schema = z.object({
 });
 
 export const POST = route(async (req: Request) => {
-  const user = await requireUser();
+  const user = await requireVerifiedUser();
   rateLimit(`withdraw:${user.id}`, 10, 60 * 60 * 1000);
   const body = await parseBody(req, schema);
   const amount = round2(body.amount);

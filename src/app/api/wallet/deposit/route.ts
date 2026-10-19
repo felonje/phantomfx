@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { requireUser } from "@/lib/auth";
+import { requireVerifiedUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { HttpError, json, parseBody, rateLimit, route } from "@/lib/http";
 import { audit } from "@/server/accounts";
@@ -14,7 +14,7 @@ const schema = z.object({
 });
 
 export const POST = route(async (req: Request) => {
-  const user = await requireUser();
+  const user = await requireVerifiedUser();
   rateLimit(`deposit:${user.id}`, 20, 60 * 60 * 1000);
   const body = await parseBody(req, schema);
   const live = await prisma.account.findFirst({ where: { userId: user.id, type: "LIVE" } });

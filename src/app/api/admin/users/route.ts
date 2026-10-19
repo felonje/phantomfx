@@ -18,7 +18,7 @@ export const GET = route(async (req: Request) => {
     orderBy: { createdAt: "desc" },
     take: 200,
     select: {
-      id: true, email: true, name: true, phone: true, country: true, role: true, status: true, createdAt: true,
+      id: true, email: true, name: true, phone: true, country: true, role: true, status: true, createdAt: true, emailVerifiedAt: true, totpEnabled: true,
       accounts: { select: { id: true, login: true, type: true, balance: true, leverage: true } },
     },
   });

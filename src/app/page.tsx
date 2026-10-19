@@ -189,11 +189,17 @@ export default async function Home() {
       <footer className="border-t border-ink-800 px-4 py-10 sm:px-6">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
           <Logo />
+          <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-slate-400">
+            <Link href="/terms" className="hover:text-white">Terms of Service</Link>
+            <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
+            <Link href="/risk-disclosure" className="hover:text-white">Risk Disclosure</Link>
+          </nav>
           <p className="text-xs text-slate-500">© {new Date().getFullYear()} PhantomFX. All rights reserved.</p>
         </div>
         <p className="mx-auto mt-6 max-w-4xl text-center text-xs leading-relaxed text-slate-500">
           Risk warning: Trading leveraged products such as forex carries a high level of risk and may not be suitable for
-          all investors. You could lose all of your deposited funds.
+          all investors. You could lose all of your deposited funds.{" "}
+          <Link href="/risk-disclosure" className="text-slate-400 underline-offset-2 hover:underline">Read the full risk disclosure</Link>.
         </p>
       </footer>
     </div>
