@@ -36,7 +36,7 @@ async function main() {
   }
   const passwordHash = await bcrypt.hash(password, 12);
   await prisma.$transaction(async (tx) => {
-    const user = await tx.user.create({ data: { email, name: "Administrator", passwordHash, role: "ADMIN" } });
+    const user = await tx.user.create({ data: { email, name: "Administrator", passwordHash, role: "ADMIN", emailVerifiedAt: new Date(), termsAcceptedAt: new Date() } });
     await createDefaultAccounts(tx, user.id);
   });
   console.log(`Created admin ${email}`);

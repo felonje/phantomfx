@@ -186,6 +186,8 @@ interface AdminUser {
   role: string;
   status: string;
   createdAt: string;
+  emailVerifiedAt: string | null;
+  totpEnabled: boolean;
   accounts: { id: string; login: number; type: string; balance: number; leverage: number }[];
 }
 
@@ -197,7 +199,7 @@ function UsersTab({ toast }: { toast: Toast }) {
     const t = setTimeout(load, 250);
     return () => clearTimeout(t);
   }, [load]);
-  const update = async (id: string, body: Record<string, string>) => {
+  const update = async (id: string, body: Record<string, string | boolean>) => {
     try {
       await api(`/api/admin/users/${id}`, { method: "PATCH", body });
       toast.ok("Client updated");
@@ -230,7 +232,14 @@ function UsersTab({ toast }: { toast: Toast }) {
           <tbody>
             {users.map((u) => (
               <tr key={u.id}>
-                <td><div className="text-white">{u.name}</div><div className="text-xs text-slate-500">{u.email}</div></td>
+                <td>
+                  <div className="text-white">{u.name}</div>
+                  <div className="text-xs text-slate-500">{u.email}</div>
+                  <div className="mt-1 flex gap-1">
+                    {u.emailVerifiedAt ? <span className="badge bg-up/15 text-up">Email ✓</span> : <span className="badge bg-yellow-500/15 text-yellow-400">Unverified</span>}
+                    {u.totpEnabled && <span className="badge bg-brand-500/15 text-brand-400">2FA</span>}
+                  </div>
+                </td>
                 <td className="text-xs">{u.phone ?? "—"}<br />{u.country ?? ""}</td>
                 <td className="text-xs text-slate-400">{dateTime(u.createdAt)}</td>
                 <td className="space-y-1">
@@ -246,13 +255,26 @@ function UsersTab({ toast }: { toast: Toast }) {
                 </td>
                 <td className="text-xs">{u.role}</td>
                 <td><span className={`badge ${u.status === "ACTIVE" ? "bg-up/15 text-up" : "bg-down/15 text-down"}`}>{u.status}</span></td>
-                <td className="text-right">
+                <td className="space-y-1 text-right text-xs">
                   <button
-                    className="text-xs text-slate-400 hover:text-white"
+                    className="block w-full text-right text-slate-400 hover:text-white"
                     onClick={() => update(u.id, { status: u.status === "ACTIVE" ? "SUSPENDED" : "ACTIVE" })}
                   >
                     {u.status === "ACTIVE" ? "Suspend" : "Reactivate"}
                   </button>
+                  {!u.emailVerifiedAt && (
+                    <button className="block w-full text-right text-slate-400 hover:text-white" onClick={() => update(u.id, { verifyEmail: true })}>
+                      Mark verified
+                    </button>
+                  )}
+                  {u.totpEnabled && (
+                    <button
+                      className="block w-full text-right text-slate-400 hover:text-white"
+                      onClick={() => confirm(`Reset 2FA for ${u.email}? They will be signed out everywhere.`) && update(u.id, { resetTwoFactor: true })}
+                    >
+                      Reset 2FA
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

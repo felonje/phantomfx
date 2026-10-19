@@ -45,6 +45,17 @@ See `.env.example`. Key settings:
 - `PRICE_FEED`: `yahoo` (live, falls back to simulated if unreachable) or `simulated`
 - `ENFORCE_MARKET_HOURS`: reject orders while the FX market is closed (Sun 22:00 – Fri 22:00 UTC)
 - `DEMO_BALANCE`: starting balance for demo accounts
+- `APP_URL`: public URL used for links in emails
+- `SMTP_URL` / `MAIL_FROM`: outgoing mail (verification, password reset, security alerts). Without `SMTP_URL`, emails are printed to the server log
+- `NEXT_PUBLIC_COMPANY_NAME` / `NEXT_PUBLIC_SUPPORT_EMAIL`: shown on the Terms, Privacy and Risk Disclosure pages
+
+## Account security
+
+- Email verification (required before deposits and withdrawals), password reset by email, and password change from **Account** settings
+- Optional TOTP two-factor authentication (Google Authenticator, Authy, 1Password…) with one-time recovery codes; admins can reset a client's 2FA
+- Server-side sessions: clients can see their signed-in devices and sign out of one or all; password changes/resets and suspensions revoke sessions
+- Rate limits on sign-in, registration, 2FA and reset endpoints (in-memory, per instance)
+- Terms, Privacy Policy and Risk Disclosure pages at `/terms`, `/privacy`, `/risk-disclosure`; registration records acceptance. **These are templates: have them reviewed by a lawyer for your jurisdiction before launch.**
 
 ## Deployment
 
@@ -77,4 +88,4 @@ This is a working trading platform, but it is **not ready to take real client mo
 - **Compliance**: you need a forex broker license (e.g. CMA in Kenya), KYC/AML checks and segregated client funds before you can accept real deposits.
 - **Infrastructure**: run a **single** app instance. The price feed, trading engine and account locks run in memory, inside one process. Balances are stored as floating point; move to `Decimal` before handling significant real money.
 - **Market data**: Yahoo Finance is unofficial and rate-limited. Use a licensed feed for production.
-- **Accounts**: there is no email verification, password reset or 2FA yet.
+- **Accounts**: rate limits are kept in memory per instance; move them to Redis when you scale out.
